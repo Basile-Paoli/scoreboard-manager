@@ -1,0 +1,62 @@
+button {
+    all: unset;
+    cursor: pointer;
+    border-radius: 5px;
+
+    &:focus {
+        outline: var(--grey8) 1px solid;
+    }
+}
+
+
+input {
+    all: unset;
+    background-color: var(--grey2);
+
+    outline: black 1px solid;
+    margin: 5px;
+
+    transition: outline 0.15s;
+
+    &:focus {
+        outline: var(--lightBlue) 1px solid;
+    }
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16pt;
+    margin: 0;
+    background-color: var(--grey1);
+    color: var(--grey8);
+}
+
+html {
+    --grey1: #202224;
+    --grey2: #2f3136;
+    --grey3: #36393f;
+    --grey4: #40444b;
+    --grey5: #4f545c;
+    --grey6: #72767d;
+    --grey7: #8e9297;
+    --grey8: #b9bbbe;
+    --grey9: #dcddde;
+
+    --lightBlue: #2398c4;
+}
+
+h1 {
+    margin: 1rem 0;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    margin: 0;
+}
