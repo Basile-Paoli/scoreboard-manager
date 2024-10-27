@@ -1,2 +1,4 @@
 debug
 .idea
+build/windows
+build/bin

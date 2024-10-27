@@ -10,6 +10,7 @@ export namespace scoreboard {
 	
 	export class Player {
 	    Name: string;
+	    TeamName: string;
 	    Score: number;
 	
 	    static createFrom(source: any = {}) {
@@ -19,6 +20,7 @@ export namespace scoreboard {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.Name = source["Name"];
+	        this.TeamName = source["TeamName"];
 	        this.Score = source["Score"];
 	    }
 	}

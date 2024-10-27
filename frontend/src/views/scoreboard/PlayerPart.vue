@@ -4,6 +4,7 @@ import TextInput from "@/components/TextInput.vue";
 import {
     SetPlayerName,
     SetScore,
+    SetTeamName,
 } from "../../../wailsjs/go/scoreboard/Scoreboard";
 import { scoreboard } from "../../../wailsjs/go/models";
 import Player = scoreboard.Player;
@@ -11,28 +12,50 @@ import Player = scoreboard.Player;
 const props = defineProps<{ index: number }>();
 const player = defineModel<Player>({ required: true });
 
-function handleScoreUpdate() {
+function scoreUpdate() {
     SetScore(props.index, player.value.Score);
 }
 
-function handleNameUpdate() {
+function nameUpdate() {
     SetPlayerName(props.index, player.value.Name);
+}
+
+function teamNameUpdate() {
+    SetTeamName(props.index, player.value.TeamName);
 }
 </script>
 
 <template>
-    <div>
-        <TextInput
-            v-model="player.Name"
-            class="input-field"
-            @update:model-value="() => handleNameUpdate()"
-        />
+    <div class="player-part">
+        <div class="name-group">
+            <TextInput
+                v-model="player.TeamName"
+                class="team-input"
+                @blur="teamNameUpdate"
+            />
+            <TextInput v-model="player.Name" @blur="nameUpdate" />
+        </div>
         <NumberInput
             v-model.number="player.Score"
-            class="input-field"
-            @update:model-value="() => handleScoreUpdate()"
+            @update:model-value="scoreUpdate"
         />
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.player-part {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+
+    > .name-group {
+        display: flex;
+        gap: 0.5rem;
+
+        > .team-input {
+            max-width: 100px;
+        }
+    }
+}
+</style>

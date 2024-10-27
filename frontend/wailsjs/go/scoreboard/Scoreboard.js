@@ -25,3 +25,7 @@ export function SetRoundName(arg1) {
 export function SetScore(arg1, arg2) {
   return window['go']['scoreboard']['Scoreboard']['SetScore'](arg1, arg2);
 }
+
+export function SetTeamName(arg1, arg2) {
+  return window['go']['scoreboard']['Scoreboard']['SetTeamName'](arg1, arg2);
+}

@@ -13,3 +13,5 @@ export function SetPlayerName(arg1:number,arg2:string):Promise<void>;
 export function SetRoundName(arg1:string):Promise<void>;
 
 export function SetScore(arg1:number,arg2:number):Promise<void>;
+
+export function SetTeamName(arg1:number,arg2:string):Promise<void>;
