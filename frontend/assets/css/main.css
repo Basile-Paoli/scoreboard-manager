@@ -1,37 +1,3 @@
-button {
-    all: unset;
-    cursor: pointer;
-    border-radius: 5px;
-
-    &:focus {
-        outline: var(--grey8) 1px solid;
-    }
-}
-
-
-input {
-    all: unset;
-    box-sizing: border-box;
-    background-color: var(--grey2);
-
-    outline: black 1px solid;
-    margin: 5px;
-
-    transition: outline 0.15s;
-
-    &:focus {
-        outline: var(--lightBlue) 1px solid;
-    }
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    font-size: 16pt;
-    margin: 0;
-    background-color: var(--grey1);
-    color: var(--grey8);
-}
-
 html {
     --grey1: #202224;
     --grey2: #2f3136;
@@ -46,8 +12,39 @@ html {
     --lightBlue: #2398c4;
 }
 
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16pt;
+    margin: 0;
+    background-color: var(--grey1);
+    color: var(--grey8);
+}
+
 h1 {
     margin: 1rem 0;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+    border-radius: 5px;
+
+    &:focus {
+        outline: var(--grey8) 1px solid;
+    }
+}
+
+input {
+    all: unset;
+    box-sizing: border-box;
+    margin: 5px;
+    background-color: var(--grey2);
+    outline: black 1px solid;
+    transition: outline 0.15s;
+
+    &:focus {
+        outline: var(--lightBlue) 1px solid;
+    }
 }
 
 input[type=number]::-webkit-inner-spin-button,

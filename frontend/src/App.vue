@@ -2,7 +2,14 @@
 
 <template>
     <div class="layout">
-        <RouterView />
+        <RouterView v-slot="{ Component }">
+            <Suspense timeout="0">
+                <component :is="Component" />
+                <template #fallback>
+                    <h1>Loading...</h1>
+                </template>
+            </Suspense>
+        </RouterView>
     </div>
 </template>
 
