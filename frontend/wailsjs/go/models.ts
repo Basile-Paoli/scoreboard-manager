@@ -1,11 +1,3 @@
-export namespace main {
-	
-	export enum Event {
-	    STRING_CHANGED = "stringChanged",
-	}
-
-}
-
 export namespace scoreboard {
 	
 	export class Player {

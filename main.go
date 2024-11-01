@@ -20,19 +20,6 @@ var assets embed.FS
 //go:embed build/appicon.png
 var icon []byte
 
-type Event string
-
-const (
-	StringChanged Event = "stringChanged"
-)
-
-var Events = []struct {
-	Value  Event
-	TSName string
-}{
-	{StringChanged, "STRING_CHANGED"},
-}
-
 func main() {
 	app := NewApp()
 	scoreBoard := scoreboard.NewScoreboard(3, "round1", []string{"John", "Paul"})
@@ -43,7 +30,7 @@ func main() {
 		Height:   600,
 		LogLevel: logger.DEBUG,
 		OnStartup: func(ctx context.Context) {
-			app.startup(ctx, scoreBoard)
+			app.startup(ctx)
 		},
 		OnDomReady:       app.domReady,
 		OnBeforeClose:    app.beforeClose,
@@ -57,10 +44,6 @@ func main() {
 		Bind: []interface{}{
 			app,
 			scoreBoard,
-		},
-		EnumBind: []interface {
-		}{
-			Events,
 		},
 		Mac: &mac.Options{
 			About: &mac.AboutInfo{

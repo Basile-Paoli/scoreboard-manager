@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import {
-    GetScoreBoard,
-    SetBestOf,
-    SetRoundName,
-} from "../../../wailsjs/go/scoreboard/Scoreboard";
 import TextInput from "@/components/TextInput.vue";
 import NumberInput from "@/components/NumberInput.vue";
 import PlayerPart from "@/views/scoreboard/PlayerPart.vue";
-import { scoreboard } from "../../../wailsjs/go/models";
-import Scoreboard = scoreboard.Scoreboard;
+import {
+    GetScoreBoard,
+    SaveEntireScoreboard,
+    SetBestOf,
+    SetRoundName,
+} from "../../../wailsjs/go/scoreboard/Scoreboard";
 
-const scoreBoard = ref<Scoreboard>(Scoreboard.createFrom({}));
+const scoreBoard = ref(await GetScoreBoard());
 onMounted(async () => {
-    scoreBoard.value = await GetScoreBoard();
+    await SaveEntireScoreboard();
 });
 </script>
 <template>
@@ -30,10 +29,10 @@ onMounted(async () => {
         />
         <div class="players">
             <PlayerPart
-                v-for="(_, i) in scoreBoard.Players"
+                v-for="i in scoreBoard.Players.length"
                 :key="i"
-                v-model="scoreBoard.Players[i]"
-                :index="i"
+                v-model="scoreBoard.Players[i - 1]"
+                :index="i - 1"
             />
         </div>
     </div>
@@ -44,13 +43,11 @@ onMounted(async () => {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    max-width: fit-content;
 
     > .players {
         display: flex;
         justify-content: space-around;
         gap: 1rem;
-        flex-wrap: wrap;
     }
 }
 </style>
