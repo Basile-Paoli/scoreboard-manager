@@ -1,18 +1,27 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import TextInput from "@/components/TextInput.vue";
 import NumberInput from "@/components/NumberInput.vue";
 import PlayerPart from "@/views/scoreboard/PlayerPart.vue";
 import {
     GetScoreBoard,
-    SaveEntireScoreboard,
     SetBestOf,
     SetRoundName,
 } from "../../../wailsjs/go/scoreboard/Scoreboard";
+import { EventsOff, EventsOn } from "../../../wailsjs/runtime";
+import { events } from "../../../wailsjs/go/models";
+import Event = events.Event;
 
 const scoreBoard = ref(await GetScoreBoard());
-onMounted(async () => {
-    await SaveEntireScoreboard();
+
+onMounted(() => {
+    EventsOn(Event.updateScoreboard, async () => {
+        scoreBoard.value = await GetScoreBoard();
+    });
+});
+
+onUnmounted(async () => {
+    EventsOff(Event.updateScoreboard);
 });
 </script>
 <template>

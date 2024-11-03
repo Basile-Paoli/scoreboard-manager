@@ -1,4 +1,18 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onErrorCaptured, ref } from "vue";
+import ErrorDisplay from "@/components/ErrorDisplay.vue";
+
+const errorDisplayRef = ref();
+
+onErrorCaptured((e: unknown) => {
+    if (e instanceof Error) {
+        errorDisplayRef.value?.addError(e.message);
+    } else {
+        errorDisplayRef.value?.addError(e);
+    }
+    return true;
+});
+</script>
 
 <template>
     <div class="layout">
@@ -11,6 +25,7 @@
             </Suspense>
         </RouterView>
     </div>
+    <ErrorDisplay ref="errorDisplayRef" />
 </template>
 
 <style scoped>

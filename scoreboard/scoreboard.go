@@ -1,8 +1,11 @@
 package scoreboard
 
 import (
+	"context"
+	"errors"
 	"fmt"
-	"log"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"scoreboard-manager/events"
 	"scoreboard-manager/output"
 	"strconv"
 	"sync"
@@ -13,6 +16,7 @@ type Scoreboard struct {
 	RoundName string
 	Players   []*Player
 	mu        sync.Mutex
+	ctx       context.Context
 }
 
 func NewScoreboard(bestOf int, roundName string, playerNames []string) *Scoreboard {
@@ -24,6 +28,15 @@ func NewScoreboard(bestOf int, roundName string, playerNames []string) *Scoreboa
 		BestOf:    bestOf,
 		RoundName: roundName,
 		Players:   players,
+	}
+}
+
+func (s *Scoreboard) Startup(ctx context.Context) {
+	s.ctx = ctx
+	err := s.SaveEntireScoreboard()
+	if err != nil {
+		runtime.LogError(ctx, err.Error())
+		runtime.EventsEmit(ctx, string(events.Error), err.Error())
 	}
 }
 
@@ -43,7 +56,6 @@ func (s *Scoreboard) writeBestOf(bestOf int) error {
 		return fmt.Errorf("failed to write best of: %w", err)
 	}
 	return nil
-
 }
 
 func (s *Scoreboard) SetRoundName(roundName string) error {
@@ -60,22 +72,28 @@ func (s *Scoreboard) writeRoundName(roundName string) error {
 	return nil
 }
 
-func (s *Scoreboard) SaveEntireScoreboard() {
+func (s *Scoreboard) SaveEntireScoreboard() error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	var errs []error
 
 	for i, player := range s.Players {
 		if err := s.writePlayerName(i, player.Name); err != nil {
-			log.Println(err)
+			errs = append(errs, err)
 		}
 		if err := s.writeScore(i, player.Score); err != nil {
-			log.Println(err)
+			errs = append(errs, err)
 		}
 	}
 	if err := s.writeBestOf(s.BestOf); err != nil {
-		log.Println(err)
+		errs = append(errs, err)
 	}
 	if err := s.writeRoundName(s.RoundName); err != nil {
-		log.Println(err)
+		errs = append(errs, err)
 	}
+
+	if len(errs) > 0 {
+		return fmt.Errorf("failed to save entire scoreboard: %w", errors.Join(errs...))
+	}
+	return nil
 }

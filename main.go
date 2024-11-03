@@ -4,6 +4,7 @@ import (
 	"context"
 	"embed"
 	"log"
+	"scoreboard-manager/events"
 	"scoreboard-manager/scoreboard"
 
 	"github.com/wailsapp/wails/v2"
@@ -21,7 +22,6 @@ var assets embed.FS
 var icon []byte
 
 func main() {
-	app := NewApp()
 	scoreBoard := scoreboard.NewScoreboard(3, "round1", []string{"John", "Paul"})
 
 	err := wails.Run(&options.App{
@@ -30,11 +30,8 @@ func main() {
 		Height:   600,
 		LogLevel: logger.DEBUG,
 		OnStartup: func(ctx context.Context) {
-			app.startup(ctx)
+			scoreBoard.Startup(ctx)
 		},
-		OnDomReady:       app.domReady,
-		OnBeforeClose:    app.beforeClose,
-		OnShutdown:       app.shutdown,
 		WindowStartState: options.Normal,
 		AssetServer: &assetserver.Options{
 			Assets:     assets,
@@ -42,8 +39,10 @@ func main() {
 			Middleware: nil,
 		},
 		Bind: []interface{}{
-			app,
 			scoreBoard,
+		},
+		EnumBind: []interface{}{
+			events.Events,
 		},
 		Mac: &mac.Options{
 			About: &mac.AboutInfo{
