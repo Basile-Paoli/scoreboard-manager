@@ -1,0 +1,36 @@
+query GetStreamQueues($tournamentSlug: String!) {
+    tournament(slug: $tournamentSlug) {
+        streamQueue {
+            id
+            stream {
+                streamId
+                streamUrl
+            }
+            sets {
+                fullRoundText
+                entrant1Score
+                entrant2Score
+                slots {
+                    slotIndex
+                    entrant {
+                        players {
+                            prefix
+                            gamerTag
+                            user {
+                                authorizations {
+                                    type
+                                    externalUsername
+                                }
+                                location {
+                                    country
+                                    state
+                                }
+                                genderPronoun
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

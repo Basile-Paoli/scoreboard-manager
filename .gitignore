@@ -2,3 +2,4 @@ debug
 .idea
 build/windows
 build/bin
+startgg/api/generated.go

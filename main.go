@@ -58,3 +58,6 @@ func main() {
 		log.Fatal(err)
 	}
 }
+
+//go:generate go get github.com/Khan/genqlient
+//go:generate go run github.com/Khan/genqlient startgg/api/genqlient.yaml
